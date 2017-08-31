@@ -20,6 +20,21 @@
 from math import factorial
 from itertools import product
 
+def get_partitions(target, max_value, partition_list, current_list):
+    if target == 0:
+        new_list = [x for x in current_list]
+        print("Appending {} to partition_list".format(new_list))
+        partition_list.append(new_list)
+        current_list.clear()
+    else:
+        for i in range(1, 100):
+            if i > max_value or i > target:
+                break
+            print("Appending {} to current_list".format(i))
+            current_list.append(i)
+            get_partitions(target - i, i, partition_list, current_list)
+                
+        
 def get_min_value(n):
     min_value = 2 ** 63
 
@@ -35,7 +50,7 @@ def get_min_value(n):
         # Cartesian product (get all possible arrangement of the prime
         #                    values in the variable primes so that the
         #                    length is i (RANGE))
-        for factor_arr in product(primes[:i], repeat = i):
+        for j, factor_arr in enumerate(product(primes[:i], repeat = i)):
             
             counter = []
             for prime in primes:
@@ -58,7 +73,7 @@ def get_min_value(n):
                 break
 
             
-            print(factor_arr)
+            print("{} {}".format(j, factor_arr))
             if len(factor_arr) > 0:
                 if factor_arr[0] == primes[1]:
                     print("LOOPED THROUGH ALL VARIATIONS, MOVE ON {}".format(factor_arr))
@@ -77,4 +92,11 @@ def get_min_value(n):
     return min_value
 
 n = int(input())
+
+partition_list = []
+current_list = []
+get_partitions(n, n, partition_list, current_list)
+
+print(partition_list)
+
 get_min_value(n)
